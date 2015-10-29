@@ -10,6 +10,17 @@ module.exports =
       items:
         type: 'string'
 
+    parenthesis:
+      title: '(parenthesis)'
+      type : 'boolean'
+      default : true
+
+    curlies:
+      title: '{curlies}'
+      type : 'boolean'
+      default : true
+
+
   areaView: null
 
   activate: (state) ->
