@@ -37,6 +37,14 @@ class SwacketsView
         colors = ['#ff3333']
         colors = colors.concat(atom.config.get('swackets.colors'))
 
+        l_swacket = '{'
+        r_swacket = '}'
+
+        #hacky Clojure Mode
+        if atom.workspace.getActiveTextEditor().getGrammar().name is 'Clojure'
+          l_swacket = '('
+          r_swacket = ')'
+
         setTimeout ->
 
             lineGroups = $("atom-text-editor.is-focused::shadow .lines > div:not(.cursors) > div")
@@ -57,10 +65,9 @@ class SwacketsView
                     curChar = 0
                     curSpeechChar = undefined #TODO omit comments and speechmarks (HARD)
                     while (curChar < unseenLength)
-
-                        if (northOfTheScroll[curChar] == '{')
+                        if (northOfTheScroll[curChar] == l_swacket)
                             sweatyness++
-                        else if (northOfTheScroll[curChar] == '}')
+                        else if (northOfTheScroll[curChar] == r_swacket)
                             sweatyness = Math.max.apply @, [(sweatyness-1), 0]
 
                         curChar++
@@ -69,13 +76,14 @@ class SwacketsView
                     ####DONE WITH PRE-BUFFER GUESSTIMATION####
 
                 $(singleGroup).find('span').each (index, element) =>
-                    if ($(element).html()[0] == '{' || $(element).html()[1] == '{')
+
+                    if ($(element).html()[0] == l_swacket || $(element).html()[1] == l_swacket)
                         sweatyness++
                         sweatcap = Math.max.apply @, [sweatyness, 0]
                         sweatcap = Math.min.apply @, [sweatcap, colors.length - 1]
                         $(element).css('color', colors[sweatcap])
 
-                    if ($(element).html()[0] == '}' || $(element).html()[1] == '}')
+                    if ($(element).html()[0] == r_swacket || $(element).html()[1] == r_swacket)
                         sweatcap = Math.max.apply @, [sweatyness, 0]
                         sweatcap = Math.min.apply @, [sweatcap, colors.length - 1]
                         $(element).css('color', colors[sweatcap])
