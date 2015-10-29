@@ -41,9 +41,13 @@ class SwacketsView
         r_swacket = '}'
 
         #hacky Clojure Mode
-        if atom.workspace.getActiveTextEditor().getGrammar().name is 'Clojure'
-          l_swacket = '('
-          r_swacket = ')'
+        try
+          if atom.workspace.getActiveTextEditor().getGrammar().name is 'Clojure'
+            l_swacket = '('
+            r_swacket = ')'
+        catch error
+
+
 
         setTimeout ->
 
